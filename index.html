@@ -3,127 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <title>Registro de Delays</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
-    .container { max-width: 1000px; margin: auto; background: #fff; padding: 20px; border-radius: 6px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    h1 { color: #2c3e50; }
-    .info-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(250px,1fr)); gap: 12px; margin-bottom: 15px; }
-    .info-card { background: #f9f9f9; padding: 10px; border-radius: 4px; }
-    .info-card h4 { margin-bottom: 6px; color: #2c3e50; }
-    .info-card input, .info-card select, .info-card textarea { width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 3px; }
-    .button-group { margin-top: 20px; display: flex; gap: 10px; }
-    .btn { padding: 8px 14px; border: none; border-radius: 4px; cursor: pointer; }
-    .btn-primary { background: #3498db; color: #fff; }
-  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Registro de Delays</h1>
+  <h2>Formulario de Registro de Delay</h2>
+  <form onsubmit="enviarDelay(); return false;">
+    <label>Fecha:</label>
+    <input type="date" id="fecha" required><br><br>
 
-    <div class="info-grid">
-      <div class="info-card">
-        <h4>Fecha</h4>
-        <input type="date" id="delayDate">
-      </div>
-      <div class="info-card">
-        <h4>Área afectada</h4>
-        <select id="areaDelay">
-          <option value="">Seleccione área</option>
-          <option value="IMF">Horno de Inducción (IMF)</option>
-          <option value="CCM">Máquina de Colada Continua (CCM)</option>
-          <option value="PCH">Patio de Chatarra (PCH)</option>
-          <option value="CRA">Grúa (CRA)</option>
-          <option value="TUN">Área de Tundish (TUN)</option>
-          <option value="LAD">Cuchara (LAD)</option>
-          <option value="PUMP">Casa de Bombas (PUMP)</option>
-          <option value="EX">Extracción de Humos (EX)</option>
-          <option value="TRA">Transformador (TRA)</option>
-          <option value="ANDE">ANDE</option>
-          <option value="O2">Oxígeno (O2)</option>
-          <option value="QC">Control de Calidad (QC)</option>
-          <option value="LAB">Laboratorio Químico (LAB)</option>
-          <option value="TM">Taller de Molde (TM)</option>
-        </select>
-      </div>
-      <div class="info-card">
-        <h4>Tipo de Delay</h4>
-        <select id="typeDelay">
-          <option value="">Seleccione tipo</option>
-          <option value="OPE">Operacional</option>
-          <option value="ELE">Eléctrico</option>
-          <option value="MEC">Mecánico</option>
-          <option value="REF">Refractario</option>
-          <option value="PRO">Proceso</option>
-          <option value="SCR">Chatarra</option>
-          <option value="SUP">Proveedores</option>
-          <option value="PRE">Preventivo</option>
-          <option value="UTI">Utilidades</option>
-          <option value="EXT">Externo</option>
-          <option value="CON">Consumibles</option>
-          <option value="TRA">Transporte</option>
-          <option value="HYD">Hidráulico</option>
-          <option value="PNE">Neumático</option>
-          <option value="PC">Capacitación</option>
-          <option value="SYSO">SysO</option>
-        </select>
-      </div>
-      <div class="info-card">
-        <h4>Duración (HH:MM)</h4>
-        <input type="time" id="delayDuration" step="60">
-      </div>
-      <div class="info-card">
-        <h4>Colada N°</h4>
-        <input type="number" id="coladaNumber" placeholder="Ingrese número de colada">
-      </div>
-      <div class="info-card">
-        <h4>Equipo</h4>
-        <input type="text" id="delayEquipment" placeholder="Ingrese nombre del equipo">
-      </div>
-      <div class="info-card">
-        <h4>Problema</h4>
-        <textarea id="delayProblem" placeholder="Describa el problema..."></textarea>
-      </div>
-    </div>
+    <label>Área afectada:</label>
+    <input type="text" id="area" required><br><br>
 
-    <!-- Botón Guardar -->
-    <div class="button-group">
-      <button class="btn btn-primary" onclick="guardar()">Guardar</button>
-    </div>
-  </div>
+    <label>Tipo de Delay:</label>
+    <input type="text" id="tipo" required><br><br>
+
+    <label>Duración (HH:MM):</label>
+    <input type="text" id="duracion" required><br><br>
+
+    <label>Colada N°:</label>
+    <input type="text" id="colada" required><br><br>
+
+    <label>Equipo:</label>
+    <input type="text" id="equipo" required><br><br>
+
+    <label>Problema:</label>
+    <input type="text" id="problema" required><br><br>
+
+    <button type="submit">Guardar Delay</button>
+  </form>
 
   <script>
-    function guardar() {
-      const fecha = document.getElementById('delayDate').value;
-      const colada = document.getElementById('coladaNumber').value;
-
-      // Validación mínima: Fecha y Colada N° son obligatorios
-      if (!fecha || !colada) {
-        alert("Debe completar al menos Fecha y Colada N°");
-        return;
-      }
-
+    function enviarDelay() {
       const datos = {
-        fecha,
-        area: document.getElementById('areaDelay').value,
-        tipo: document.getElementById('typeDelay').value,
-        duracion: document.getElementById('delayDuration').value,
-        colada,
-        equipo: document.getElementById('delayEquipment').value,
-        problema: document.getElementById('delayProblem').value
+        fecha: document.getElementById("fecha").value,
+        area: document.getElementById("area").value,
+        tipo: document.getElementById("tipo").value,
+        duracion: document.getElementById("duracion").value,
+        colada: document.getElementById("colada").value,
+        equipo: document.getElementById("equipo").value,
+        problema: document.getElementById("problema").value
       };
 
-    fetch("https://script.google.com/macros/s/AKfycbwq4POMsxWUPiuMYo3r001iqiTx4-k8Ungn0A8BCwOFiSy7OoCA7lxOQXU0wCjc6bkC_w/exec", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify(datos)
-})
-.then(res => res.json())
-.then(respuesta => {
-  alert("Delay guardado en Google Sheets. Nº: " + respuesta.row);
-})
-.catch(err => alert("Error al guardar: " + err));
+      fetch("https://script.google.com/macros/s/AKfycbyY4htIFYvZ6CUv3-4k7pS4vzU5aHJK-zs708RQVfoMMTz2xJdKHHfyDFKIRlfo6tnOUg/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos)
+      })
+      .then(res => res.json())
+      .then(respuesta => {
+        alert("Delay guardado en Google Sheets. Nº: " + respuesta.row);
+      })
+      .catch(err => alert("Error al guardar: " + err));
     }
   </script>
 </body>
