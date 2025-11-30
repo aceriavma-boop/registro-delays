@@ -112,15 +112,18 @@
         problema: document.getElementById('delayProblem').value
       };
 
-      fetch("https://script.google.com/macros/s/AKfycbwq4POMsxWUPiuMYo3r001iqiTx4-k8Ungn0A8BCwOFiSy7OoCA7lxOQXU0wCjc6bkC_w/exec", {
-        method: "POST",
-        body: JSON.stringify(datos)
-      })
-      .then(res => res.json())
-      .then(respuesta => {
-        alert("Delay guardado en Google Sheets. Nº: " + respuesta.row);
-      })
-      .catch(err => alert("Error al guardar: " + err));
+    fetch("https://script.google.com/macros/s/AKfycbwq4POMsxWUPiuMYo3r001iqiTx4-k8Ungn0A8BCwOFiSy7OoCA7lxOQXU0wCjc6bkC_w/exec", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(datos)
+})
+.then(res => res.json())
+.then(respuesta => {
+  alert("Delay guardado en Google Sheets. Nº: " + respuesta.row);
+})
+.catch(err => alert("Error al guardar: " + err));
     }
   </script>
 </body>
