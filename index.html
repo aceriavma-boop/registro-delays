@@ -92,13 +92,6 @@
   </div>
 
   <script>
-    // Cargar fecha actual automáticamente
-    const hoy = new Date();
-    const fechaLocal = hoy.getFullYear() + "-" +
-      String(hoy.getMonth() + 1).padStart(2, "0") + "-" +
-      String(hoy.getDate()).padStart(2, "0");
-    document.getElementById("delayDate").value = fechaLocal;
-
     function guardar() {
       const fecha = document.getElementById('delayDate').value;
       const colada = document.getElementById('coladaNumber').value;
@@ -109,34 +102,26 @@
         return;
       }
 
-      // Crear objeto FormData
-      const formData = new FormData();
-      formData.append("fecha", fecha);
-      formData.append("area", document.getElementById('areaDelay').value);
-      formData.append("tipo", document.getElementById('typeDelay').value);
-      formData.append("duracion", document.getElementById('delayDuration').value);
-      formData.append("colada", colada);
-      formData.append("equipo", document.getElementById('delayEquipment').value);
-      formData.append("problema", document.getElementById('delayProblem').value);
+      const datos = {
+        fecha,
+        area: document.getElementById('areaDelay').value,
+        tipo: document.getElementById('typeDelay').value,
+        duracion: document.getElementById('delayDuration').value,
+        colada,
+        equipo: document.getElementById('delayEquipment').value,
+        problema: document.getElementById('delayProblem').value
+      };
 
-      // Enviar al WebApp
       fetch("https://script.google.com/macros/s/AKfycbwq4POMsxWUPiuMYo3r001iqiTx4-k8Ungn0A8BCwOFiSy7OoCA7lxOQXU0wCjc6bkC_w/exec", {
         method: "POST",
-        body: formData
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(datos)
       })
-      .then(res => res.text())
+      .then(res => res.json())
       .then(respuesta => {
-        alert(respuesta); // El Apps Script devuelve texto ✅ o ❌
-        if (respuesta.includes("✅")) {
-          // Resetear formulario y volver a poner fecha actual
-          document.getElementById("delayDate").value = fechaLocal;
-          document.getElementById("coladaNumber").value = "";
-          document.getElementById("delayEquipment").value = "";
-          document.getElementById("delayProblem").value = "";
-          document.getElementById("areaDelay").value = "";
-          document.getElementById("typeDelay").value = "";
-          document.getElementById("delayDuration").value = "";
-        }
+        alert("Delay guardado en Google Sheets. Nº: " + respuesta.row);
       })
       .catch(err => alert("Error al guardar: " + err));
     }
