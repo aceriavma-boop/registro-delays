@@ -4,74 +4,146 @@
   <meta charset="UTF-8">
   <title>Registro de Delays</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; }
-    label { display: block; margin-top: 10px; }
-    input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; }
-    .alerta { color: red; font-weight: bold; margin-top: 10px; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+    }
+    .card {
+      background: #fafafa;
+      padding: 15px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+    }
+    .card label {
+      font-weight: bold;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .card input, .card select, .card textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .button-group {
+      margin-top: 20px;
+      text-align: center;
+    }
+    button {
+      background: #3498db;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #2980b9;
+    }
+    .alerta {
+      color: red;
+      font-weight: bold;
+      margin-bottom: 15px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
-  <h2>Registro de Delays</h2>
-  <div id="alertaTurno" class="alerta"></div>
+  <div class="container">
+    <h2>Registro de Delays</h2>
+    <div id="alertaTurno" class="alerta"></div>
 
-  <form id="delayForm">
-    <label>Fecha</label>
-    <input type="date" id="fecha" name="fecha" required>
+    <form id="delayForm">
+      <div class="grid">
+        <div class="card">
+          <label>Fecha</label>
+          <input type="date" id="fecha" name="fecha" required>
+        </div>
+        <div class="card">
+          <label>Área afectada</label>
+          <select name="area" required>
+            <option value="">Seleccionar</option>
+            <option value="IMF">Horno de Inducción (IMF)</option>
+            <option value="CCM">Máquina de Colada Continua (CCM)</option>
+            <option value="PCH">Patio de Chatarra (PCH)</option>
+            <option value="CRA">Grúa (CRA)</option>
+            <option value="TUN">Área de Tundish (TUN)</option>
+            <option value="LAD">Cuchara (LAD)</option>
+            <option value="PUMP">Casa de Bombas (PUMP)</option>
+            <option value="EX">Extracción de Humos (EX)</option>
+            <option value="TRA">Transformador (TRA)</option>
+            <option value="ANDE">ANDE</option>
+            <option value="O2">Oxígeno (O2)</option>
+            <option value="QC">Control de Calidad (QC)</option>
+            <option value="LAB">Laboratorio Químico (LAB)</option>
+            <option value="TM">Taller de Molde (TM)</option>
+          </select>
+        </div>
+        <div class="card">
+          <label>Tipo de Delay</label>
+          <select name="tipo" required>
+            <option value="">Seleccionar</option>
+            <option value="OPE">Operacional</option>
+            <option value="ELE">Eléctrico</option>
+            <option value="MEC">Mecánico</option>
+            <option value="REF">Refractario</option>
+            <option value="PRO">Proceso</option>
+            <option value="SCR">Chatarra</option>
+            <option value="SUP">Proveedores</option>
+            <option value="PRE">Preventivo</option>
+            <option value="UTI">Utilidades</option>
+            <option value="EXT">Externo</option>
+            <option value="CON">Consumibles</option>
+            <option value="TRA">Transporte</option>
+            <option value="HYD">Hidráulico</option>
+            <option value="PNE">Neumático</option>
+            <option value="PC">Capacitación</option>
+            <option value="SYSO">SysO</option>
+          </select>
+        </div>
+        <div class="card">
+          <label>Duración (HH:MM)</label>
+          <input type="time" name="duracion" step="60" required>
+        </div>
+        <div class="card">
+          <label>Colada N°</label>
+          <input type="number" name="colada" required>
+        </div>
+        <div class="card">
+          <label>Equipo</label>
+          <input type="text" name="equipo">
+        </div>
+        <div class="card" style="grid-column: span 2;">
+          <label>Problema</label>
+          <textarea name="problema"></textarea>
+        </div>
+      </div>
 
-    <label>Área afectada</label>
-    <select name="area" required>
-      <option value="">Seleccionar</option>
-      <option value="IMF">Horno de Inducción (IMF)</option>
-      <option value="CCM">Máquina de Colada Continua (CCM)</option>
-      <option value="PCH">Patio de Chatarra (PCH)</option>
-      <option value="CRA">Grúa (CRA)</option>
-      <option value="TUN">Área de Tundish (TUN)</option>
-      <option value="LAD">Cuchara (LAD)</option>
-      <option value="PUMP">Casa de Bombas (PUMP)</option>
-      <option value="EX">Extracción de Humos (EX)</option>
-      <option value="TRA">Transformador (TRA)</option>
-      <option value="ANDE">ANDE</option>
-      <option value="O2">Oxígeno (O2)</option>
-      <option value="QC">Control de Calidad (QC)</option>
-      <option value="LAB">Laboratorio Químico (LAB)</option>
-      <option value="TM">Taller de Molde (TM)</option>
-    </select>
-
-    <label>Tipo de Delay</label>
-    <select name="tipo" required>
-      <option value="">Seleccionar</option>
-      <option value="OPE">Operacional</option>
-      <option value="ELE">Eléctrico</option>
-      <option value="MEC">Mecánico</option>
-      <option value="REF">Refractario</option>
-      <option value="PRO">Proceso</option>
-      <option value="SCR">Chatarra</option>
-      <option value="SUP">Proveedores</option>
-      <option value="PRE">Preventivo</option>
-      <option value="UTI">Utilidades</option>
-      <option value="EXT">Externo</option>
-      <option value="CON">Consumibles</option>
-      <option value="TRA">Transporte</option>
-      <option value="HYD">Hidráulico</option>
-      <option value="PNE">Neumático</option>
-      <option value="PC">Capacitación</option>
-      <option value="SYSO">SysO</option>
-    </select>
-
-    <label>Duración (HH:MM)</label>
-    <input type="time" name="duracion" step="60" required>
-
-    <label>Colada N°</label>
-    <input type="number" name="colada" required>
-
-    <label>Equipo</label>
-    <input type="text" name="equipo">
-
-    <label>Problema</label>
-    <textarea name="problema"></textarea>
-
-    <button type="submit">Registrar Delay</button>
-  </form>
+      <div class="button-group">
+        <button type="submit">Registrar Delay</button>
+      </div>
+    </form>
+  </div>
 
   <script>
     // Fecha actual
