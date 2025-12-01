@@ -3,35 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <title>Registro de Delays</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    label { display: block; margin-top: 10px; }
+    input, select { width: 100%; padding: 8px; margin-top: 5px; }
+    .alerta { color: red; font-weight: bold; margin-top: 10px; }
+  </style>
 </head>
 <body>
   <h2>Formulario de Registro de Delay</h2>
 
-  <!-- Formulario que envía directamente al WebApp -->
-  <form method="POST" action="https://script.google.com/macros/s/AKfycbyY4htIFYvZ6CUv3-4k7pS4vzU5aHJK-zs708RQVfoMMTz2xJdKHHfyDFKIRlfo6tnOUg/exec">
-    <label>Fecha:</label>
-    <input type="date" name="fecha" required><br><br>
+  <form id="delayForm">
+    <label>Fecha</label>
+    <input type="date" id="fecha" name="fecha" required>
 
-    <label>Área afectada:</label>
-    <input type="text" name="area" required><br><br>
+    <label>Área afectada</label>
+    <input type="text" name="area" required>
 
-    <label>Tipo de Delay:</label>
-    <input type="text" name="tipo" required><br><br>
+    <label>Tipo de Delay</label>
+    <input type="text" name="tipo" required>
 
-    <label>Duración (HH:MM):</label>
-    <input type="text" name="duracion" required><br><br>
+    <label>Duración (HH:MM)</label>
+    <input type="text" name="duracion" required>
 
-    <label>Colada N°:</label>
-    <input type="text" name="colada" required><br><br>
+    <label>Colada N°</label>
+    <input type="text" name="colada" required>
 
-    <label>Equipo:</label>
-    <input type="text" name="equipo" required><br><br>
+    <label>Equipo</label>
+    <input type="text" name="equipo" required>
 
-    <label>Problema:</label>
-    <input type="text" name="problema" required><br><br>
+    <label>Problema</label>
+    <input type="text" name="problema" required>
 
     <button type="submit">Guardar Delay</button>
   </form>
 
+  <script>
+    // Cargar fecha actual
+    const hoy = new Date();
+    const fechaLocal = hoy.getFullYear() + "-" +
+      String(hoy.getMonth() + 1).padStart(2, "0") + "-" +
+      String(hoy.getDate()).padStart(2, "0");
+    document.getElementById("fecha").value = fechaLocal;
+
+    // Enviar datos al Web App
+    document.getElementById("delayForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(document.getElementById("delayForm"));
+
+      fetch("https://script.google.com/macros/s/AKfycbyY4htIFYvZ6CUv3-4k7pS4vzU5aHJK-zs708RQVfoMMTz2xJdKHHfyDFKIRlfo6tnOUg/exec", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => response.text())
+      .then(data => {
+        alert(data); // Muestra el mensaje real del backend
+
+        if (data.includes("✅")) {
+          document.getElementById("delayForm").reset();
+          document.getElementById("fecha").value = fechaLocal;
+        }
+      })
+      .catch(error => {
+        alert("❌ Error al guardar: " + error);
+      });
+    });
+  </script>
 </body>
 </html>
