@@ -18,13 +18,24 @@
     <input type="date" id="fecha" name="fecha" required>
 
     <label>Área afectada</label>
-    <input type="text" name="area" required>
+    <select name="area" required>
+      <option value="">Seleccionar</option>
+      <option value="CCM">CCM</option>
+      <option value="Acería">Acería</option>
+      <option value="Laminador">Laminador</option>
+    </select>
 
     <label>Tipo de Delay</label>
-    <input type="text" name="tipo" required>
+    <select name="tipo" required>
+      <option value="">Seleccionar</option>
+      <option value="Mecánico">Mecánico</option>
+      <option value="Eléctrico">Eléctrico</option>
+      <option value="Operativo">Operativo</option>
+      <option value="Materia Prima">Materia Prima</option>
+    </select>
 
     <label>Duración (HH:MM)</label>
-    <input type="text" name="duracion" required>
+    <input type="text" name="duracion" placeholder="ej: 00:45" required>
 
     <label>Colada N°</label>
     <input type="text" name="colada" required>
@@ -37,8 +48,7 @@
 
     <button type="submit">Guardar Delay</button>
   </form>
-
-  <script>
+    <script>
     // Cargar fecha actual
     const hoy = new Date();
     const fechaLocal = hoy.getFullYear() + "-" +
@@ -52,7 +62,7 @@
 
       const formData = new FormData(document.getElementById("delayForm"));
 
-      fetch("https://script.google.com/macros/s/AKfycbyY4htIFYvZ6CUv3-4k7pS4vzU5aHJK-zs708RQVfoMMTz2xJdKHHfyDFKIRlfo6tnOUg/exec", {
+      fetch("TU_URL_DEL_WEBAPP", {
         method: "POST",
         body: formData
       })
