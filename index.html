@@ -74,7 +74,7 @@
   </form>
 
   <script>
-    // Cargar fecha actual
+    // Fecha actual
     const hoy = new Date();
     const fechaLocal = hoy.getFullYear() + "-" +
       String(hoy.getMonth() + 1).padStart(2, "0") + "-" +
@@ -94,7 +94,7 @@
 
       const formData = new FormData(document.getElementById("delayForm"));
 
-      fetch("https://script.google.com/macros/s/AKfycby6_Yy4Xd0gkVwo9hJKs4QFmUzdg_lQIn_LrY-O3nYgY79LQzi_TN5RVDP-pdctKEf1/exec", {
+      fetch("TU_URL_DEL_WEBAPP", { // 👈 reemplazar con tu URL de despliegue
         method: "POST",
         body: formData
       })
