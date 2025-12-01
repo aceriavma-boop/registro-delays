@@ -2,103 +2,114 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Producción de Palanquillas</title>
+  <title>Registro de Delays</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
-    .container { max-width: 1000px; margin: auto; background: #fff; padding: 20px; border-radius: 6px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    h1 { color: #2c3e50; }
-    .info-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(250px,1fr)); gap: 12px; margin-bottom: 15px; }
-    .info-card { background: #f9f9f9; padding: 10px; border-radius: 4px; }
-    .info-card h4 { margin-bottom: 6px; color: #2c3e50; }
-    .info-card input, .info-card select, .info-card textarea { width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 3px; }
-    .button-group { margin-top: 20px; display: flex; gap: 10px; }
-    .btn { padding: 8px 14px; border: none; border-radius: 4px; cursor: pointer; }
-    .btn-primary { background: #3498db; color: #fff; }
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    label { display: block; margin-top: 10px; }
+    input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; }
+    .alerta { color: red; font-weight: bold; margin-top: 10px; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Registro de Producción de Palanquillas</h1>
+  <h2>Registro de Delays</h2>
+  <div id="alertaTurno" class="alerta"></div>
 
-    <div class="info-grid">
-      <div class="info-card">
-        <h4>Fecha</h4>
-        <input type="date" id="prodDate">
-      </div>
-      <div class="info-card">
-        <h4>Colada N°</h4>
-        <input type="number" id="coladaNumber" placeholder="Ingrese número de colada">
-      </div>
-      <div class="info-card">
-        <h4>Máquina</h4>
-        <select id="machine">
-          <option value="">Seleccione máquina</option>
-          <option value="CCM1">CCM 1</option>
-          <option value="CCM2">CCM 2</option>
-        </select>
-      </div>
-      <div class="info-card">
-        <h4>Sección</h4>
-        <select id="section">
-          <option value="">Seleccione sección</option>
-          <option value="100x100">100x100</option>
-          <option value="120x120">120x120</option>
-          <option value="150x150">150x150</option>
-        </select>
-      </div>
-      <div class="info-card">
-        <h4>Cantidad (toneladas)</h4>
-        <input type="number" id="quantity" placeholder="Ingrese cantidad">
-      </div>
-      <div class="info-card">
-        <h4>Observaciones</h4>
-        <textarea id="observations" placeholder="Notas adicionales..."></textarea>
-      </div>
-    </div>
+  <form id="delayForm">
+    <label>Fecha</label>
+    <input type="date" id="fecha" name="fecha" required>
 
-    <!-- Botón Guardar -->
-    <div class="button-group">
-      <button class="btn btn-primary" onclick="guardar()">Guardar</button>
-    </div>
-  </div>
+    <label>Área afectada</label>
+    <select name="area" required>
+      <option value="">Seleccionar</option>
+      <option value="IMF">Horno de Inducción (IMF)</option>
+      <option value="CCM">Máquina de Colada Continua (CCM)</option>
+      <option value="PCH">Patio de Chatarra (PCH)</option>
+      <option value="CRA">Grúa (CRA)</option>
+      <option value="TUN">Área de Tundish (TUN)</option>
+      <option value="LAD">Cuchara (LAD)</option>
+      <option value="PUMP">Casa de Bombas (PUMP)</option>
+      <option value="EX">Extracción de Humos (EX)</option>
+      <option value="TRA">Transformador (TRA)</option>
+      <option value="ANDE">ANDE</option>
+      <option value="O2">Oxígeno (O2)</option>
+      <option value="QC">Control de Calidad (QC)</option>
+      <option value="LAB">Laboratorio Químico (LAB)</option>
+      <option value="TM">Taller de Molde (TM)</option>
+    </select>
+
+    <label>Tipo de Delay</label>
+    <select name="tipo" required>
+      <option value="">Seleccionar</option>
+      <option value="OPE">Operacional</option>
+      <option value="ELE">Eléctrico</option>
+      <option value="MEC">Mecánico</option>
+      <option value="REF">Refractario</option>
+      <option value="PRO">Proceso</option>
+      <option value="SCR">Chatarra</option>
+      <option value="SUP">Proveedores</option>
+      <option value="PRE">Preventivo</option>
+      <option value="UTI">Utilidades</option>
+      <option value="EXT">Externo</option>
+      <option value="CON">Consumibles</option>
+      <option value="TRA">Transporte</option>
+      <option value="HYD">Hidráulico</option>
+      <option value="PNE">Neumático</option>
+      <option value="PC">Capacitación</option>
+      <option value="SYSO">SysO</option>
+    </select>
+
+    <label>Duración (HH:MM)</label>
+    <input type="time" name="duracion" step="60" required>
+
+    <label>Colada N°</label>
+    <input type="number" name="colada" required>
+
+    <label>Equipo</label>
+    <input type="text" name="equipo">
+
+    <label>Problema</label>
+    <textarea name="problema"></textarea>
+
+    <button type="submit">Registrar Delay</button>
+  </form>
 
   <script>
-    // Fecha actual por defecto
+    // Cargar fecha actual
     const hoy = new Date();
     const fechaLocal = hoy.getFullYear() + "-" +
       String(hoy.getMonth() + 1).padStart(2, "0") + "-" +
       String(hoy.getDate()).padStart(2, "0");
-    document.getElementById("prodDate").value = fechaLocal;
+    document.getElementById("fecha").value = fechaLocal;
 
-    function guardar() {
-      const fecha = document.getElementById('prodDate').value;
-      const colada = document.getElementById('coladaNumber').value;
-
-      if (!fecha || !colada) {
-        alert("Debe completar al menos Fecha y Colada N°");
-        return;
-      }
-
-      const datos = {
-        fecha,
-        colada,
-        maquina: document.getElementById('machine').value,
-        seccion: document.getElementById('section').value,
-        cantidad: document.getElementById('quantity').value,
-        observaciones: document.getElementById('observations').value
-      };
-
-      fetch("https://script.google.com/macros/s/AKfycbwq4POMsxWUPiuMYo3r001iqiTx4-k8Ungn0A8BCwOFiSy7OoCA7lxOQXU0wCjc6bkC_w/exec", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datos)
-      })
-      .then(res => res.json())
-      .then(respuesta => {
-        alert("Producción guardada correctamente. Nº: " + respuesta.row);
-      })
-      .catch(err => alert("Error al guardar: " + err));
+    // Advertencia si es entre 00:00 y 06:00
+    const horaActual = hoy.getHours();
+    if (horaActual >= 0 && horaActual < 6) {
+      document.getElementById("alertaTurno").textContent =
+        "⚠️ Atención: estás registrando entre las 00:00 y las 06:00. Verificá que la fecha corresponda al día real.";
     }
+
+    // Enviar datos al Web App
+    document.getElementById("delayForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(document.getElementById("delayForm"));
+
+      fetch("https://script.google.com/macros/s/AKfycby6_Yy4Xd0gkVwo9hJKs4QFmUzdg_lQIn_LrY-O3nYgY79LQzi_TN5RVDP-pdctKEf1/exec", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => response.text())
+      .then(data => {
+        alert(data);
+        if (data.includes("✅")) {
+          document.getElementById("delayForm").reset();
+          document.getElementById("fecha").value = fechaLocal;
+        }
+      })
+      .catch(error => {
+        alert("❌ Error al registrar: " + error);
+      });
+    });
   </script>
 </body>
 </html>
