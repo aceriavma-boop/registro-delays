@@ -122,12 +122,23 @@
           </select>
         </div>
         <div class="card">
-          <label>Duración (HH:MM)</label>
-          <input type="time" name="duracion" step="60" required>
+          <label>Inicio (HH:MM)</label>
+          <input type="time" id="inicio" name="inicio" required>
+        </div>
+        <div class="card">
+          <label>Fin (HH:MM)</label>
+          <input type="time" id="fin" name="fin" required>
+        </div>
+        <div class="card">
+          <label>Duración (minutos)</label>
+          <input type="number" id="duracion" name="duracion" readonly>
         </div>
         <div class="card">
           <label>Colada N°</label>
-          <input type="number" name="colada" required>
+          <input type="text" name="colada" 
+                 pattern="[0-9]+[A-Za-z]*" 
+                 title="Solo números seguidos opcionalmente de letras" 
+                 required>
         </div>
         <div class="card">
           <label>Equipo</label>
@@ -159,6 +170,21 @@
       document.getElementById("alertaTurno").textContent =
         "⚠️ Atención: estás registrando entre las 00:00 y las 06:00. Verificá que la fecha corresponda al día real.";
     }
+
+    // Calcular duración automáticamente
+    function calcularDuracion() {
+      const inicio = document.getElementById("inicio").value;
+      const fin = document.getElementById("fin").value;
+      if (inicio && fin) {
+        const inicioDate = new Date("1970-01-01T" + inicio);
+        const finDate = new Date("1970-01-01T" + fin);
+        let duracionMin = (finDate - inicioDate) / 60000;
+        if (duracionMin < 0) duracionMin += 24 * 60; // si pasa medianoche
+        document.getElementById("duracion").value = duracionMin;
+      }
+    }
+    document.getElementById("inicio").addEventListener("change", calcularDuracion);
+    document.getElementById("fin").addEventListener("change", calcularDuracion);
 
     // Enviar datos al Web App
     document.getElementById("delayForm").addEventListener("submit", function(e) {
